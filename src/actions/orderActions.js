@@ -34,7 +34,11 @@ export const createOrder = (order) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.post(`/api/orders`, order, config);
+    const { data } = await axios.post(
+      `${process.env.REACT_APP_PRODUCTION_URL}/api/orders`,
+      order,
+      config
+    );
     dispatch({ type: ORDER_CREATE_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -61,7 +65,10 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.get(`/api/orders/${id}`, config);
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_PRODUCTION_URL}/api/orders/${id}`,
+      config
+    );
     dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -89,7 +96,7 @@ export const payOrder = (orderId, reference) => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.put(
-      `/api/orders/${orderId}/pay`,
+      `${process.env.REACT_APP_PRODUCTION_URL}/api/orders/${orderId}/pay`,
       reference,
       config
     );
@@ -119,7 +126,10 @@ export const myOrdersList = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.get(`/api/orders/myorders`, config);
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_PRODUCTION_URL}/api/orders/myorders`,
+      config
+    );
 
     dispatch({ type: MY_ORDER_LIST_SUCCESS, payload: data });
   } catch (error) {
@@ -147,7 +157,10 @@ export const listOrders = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.get(`/api/orders`, config);
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_PRODUCTION_URL}/api/orders`,
+      config
+    );
 
     dispatch({ type: ORDER_LIST_SUCCESS, payload: data });
   } catch (error) {
@@ -176,7 +189,7 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.put(
-      `/api/orders/${order._id}/deliver`,
+      `${process.env.REACT_APP_PRODUCTION_URL}/api/orders/${order._id}/deliver`,
       {},
       config
     );

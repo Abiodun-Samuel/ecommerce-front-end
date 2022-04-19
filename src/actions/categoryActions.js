@@ -9,7 +9,9 @@ import {
 export const getCategories = () => async (dispatch) => {
   try {
     dispatch({ type: CATEGORY_LIST_REQUEST });
-    const { data } = await axios.get(`/api/category`);
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_PRODUCTION_URL}/api/category`
+    );
     dispatch({
       type: CATEGORY_LIST_SUCCESS,
       payload: data,

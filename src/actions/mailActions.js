@@ -20,7 +20,7 @@ export const sendProductRequestMail =
         },
       };
       const { data } = await axios.post(
-        `/api/send_mail/product_request`,
+        `${process.env.REACT_APP_PRODUCTION_URL}/api/send_mail/product_request`,
         request_body,
         config
       );
