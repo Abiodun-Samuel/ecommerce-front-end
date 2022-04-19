@@ -32,9 +32,9 @@ const Product = ({ product }) => {
   };
 
   const addToCartHandler = () => {
-    dispatch(addToCart(product._id, quantity));
+    dispatch(addToCart(product.slug, quantity));
     const existItem = cartItems.filter(
-      (item) => item.product === product._id && item.quantity === quantity
+      (item) => item.product === product.slug && item.quantity === quantity
     );
     if (existItem.length > 0) {
       toast.error(

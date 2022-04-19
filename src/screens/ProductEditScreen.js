@@ -96,7 +96,7 @@ const ProductEditScreen = () => {
         },
       };
       const { data } = await axios.post(
-        "/api/upload/upload-cloudinary",
+        `${process.env.REACT_APP_PRODUCTION_URL}/api/upload/upload-cloudinary`,
         JSON.stringify({ data: base64EncodedImage }),
         config
       );

@@ -56,7 +56,7 @@ const OrderScreen = () => {
       },
     };
     const { data: clientId } = await axios.get(
-      "/api/payment/paystack_public_key",
+      `${process.env.REACT_APP_PRODUCTION_URL}/api/payment/paystack_public_key`,
       config
     );
     setPublickey(clientId);
