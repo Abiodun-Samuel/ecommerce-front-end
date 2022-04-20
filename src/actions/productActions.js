@@ -28,6 +28,7 @@ import {
   PRODUCT_SIMILAR_FAIL,
 } from "../constant/productConstants";
 import axios from "axios";
+import { BASE_URL } from "../config";
 
 export const listProducts =
   (keyword = "", pageNumber = "") =>
@@ -35,7 +36,7 @@ export const listProducts =
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST });
       const { data } = await axios.get(
-        `${process.env.REACT_APP_PRODUCTION_URL}/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+        `${BASE_URL()}/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
       );
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
     } catch (error) {
@@ -53,7 +54,7 @@ export const productsListByCategory = (slug) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCTS_LIST_BY_CATEGORY_REQUEST });
     const { data } = await axios.get(
-      `${process.env.REACT_APP_PRODUCTION_URL}/api/products/category/${slug}`
+      `${BASE_URL()}/api/products/category/${slug}`
     );
 
     dispatch({ type: PRODUCTS_LIST_BY_CATEGORY_SUCCESS, payload: data });
@@ -73,7 +74,7 @@ export const listProductDetails = (slug) => async (dispatch) => {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
     dispatch({ type: PRODUCT_SIMILAR_REQUEST });
     const { data } = await axios.get(
-      `${process.env.REACT_APP_PRODUCTION_URL}/api/products/${slug}`
+      `${BASE_URL()}/api/products/${slug}`
     );
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data.product });
     dispatch({ type: PRODUCT_SIMILAR_SUCCESS, payload: data.similarProducts });
@@ -111,7 +112,7 @@ export const createProductReview =
         },
       };
       const { data } = await axios.post(
-        `${process.env.REACT_APP_PRODUCTION_URL}/api/products/${productSlug}/reviews`,
+        `${BASE_URL()}/api/products/${productSlug}/reviews`,
         review,
         config
       );
@@ -143,7 +144,7 @@ export const deleteProduct = (slug) => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.delete(
-      `${process.env.REACT_APP_PRODUCTION_URL}/api/products/${slug}`,
+      `${BASE_URL()}/api/products/${slug}`,
       config
     );
 
@@ -174,7 +175,7 @@ export const createProduct = () => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.post(
-      `${process.env.REACT_APP_PRODUCTION_URL}/api/products`,
+      `${BASE_URL()}/api/products`,
       {},
       config
     );
@@ -206,7 +207,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.put(
-      `${process.env.REACT_APP_PRODUCTION_URL}/api/products/${product.slug}`,
+      `${BASE_URL()}/api/products/${product.slug}`,
       product,
       config
     );
@@ -227,7 +228,7 @@ export const listTopProducts = () => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_TOP_REQUEST });
     const { data } = await axios.get(
-      `${process.env.REACT_APP_PRODUCTION_URL}/api/products/top`
+      `${BASE_URL()}/api/products/top`
     );
     dispatch({ type: PRODUCT_TOP_SUCCESS, payload: data });
   } catch (error) {

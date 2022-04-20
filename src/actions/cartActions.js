@@ -5,11 +5,10 @@ import {
   SAVE_PAYMENT_METHOD_CART,
   SAVE_SHIPPING_ADDRESS_CART,
 } from "../constant/cartConstants";
+import { BASE_URL } from "../config";
 
 export const addToCart = (slug, quantity) => async (dispatch, getState) => {
-  const { data } = await axios.get(
-    `${process.env.REACT_APP_PRODUCTION_URL}/api/products/${slug}`
-  );
+  const { data } = await axios.get(`${BASE_URL()}/api/products/${slug}`);
   dispatch({
     type: ADD_CART_ITEM,
     payload: {

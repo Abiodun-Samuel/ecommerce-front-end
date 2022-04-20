@@ -26,6 +26,7 @@ import {
 } from "../constant/userConstants";
 import { MY_ORDER_LIST_RESET } from "../constant/orderConstants";
 import axios from "axios";
+import { BASE_URL } from "../config";
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -36,7 +37,7 @@ export const login = (email, password) => async (dispatch) => {
       },
     };
     const { data } = await axios.post(
-      `${process.env.REACT_APP_PRODUCTION_URL}/api/users/login`,
+      `${BASE_URL()}/api/users/login`,
       { email, password },
       config
     );
@@ -70,7 +71,7 @@ export const register = (name, email, password) => async (dispatch) => {
       },
     };
     const { data } = await axios.post(
-      `${process.env.REACT_APP_PRODUCTION_URL}/api/users`,
+      `${BASE_URL()}/api/users`,
       { name, email, password },
       config
     );
@@ -102,10 +103,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_PRODUCTION_URL}/api/users/${id}`,
-      config
-    );
+    const { data } = await axios.get(`${BASE_URL()}/api/users/${id}`, config);
     dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -133,7 +131,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.put(
-      `${process.env.REACT_APP_PRODUCTION_URL}/api/users/profile`,
+      `${BASE_URL()}/api/users/profile`,
       user,
       config
     );
@@ -165,10 +163,7 @@ export const listUsers = () => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_PRODUCTION_URL}/api/users`,
-      config
-    );
+    const { data } = await axios.get(`${BASE_URL()}/api/users`, config);
     dispatch({ type: USER_LIST_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -196,7 +191,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.delete(
-      `${process.env.REACT_APP_PRODUCTION_URL}/api/users/${id}`,
+      `${BASE_URL()}/api/users/${id}`,
       config
     );
     dispatch({ type: USER_DELETE_SUCCESS, payload: data });
@@ -225,7 +220,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
       },
     };
     const { data } = await axios.put(
-      `${process.env.REACT_APP_PRODUCTION_URL}/api/users/${user._id}`,
+      `${BASE_URL()}/api/users/${user._id}`,
       user,
       config
     );

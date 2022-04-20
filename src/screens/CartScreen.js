@@ -20,6 +20,7 @@ import { addToCart, removeFromCart } from "../actions/cartActions";
 import "react-toastify/dist/ReactToastify.css";
 
 const CartScreen = () => {
+
   const { id } = useParams();
   const productId = id;
   const [searchParams] = useSearchParams();

@@ -4,6 +4,7 @@ import {
   MAIL_REQUEST,
   MAIL_SUCCESS,
 } from "../constant/mailConstants";
+import { BASE_URL } from "../config";
 
 export const sendProductRequestMail =
   (request_body) => async (dispatch, getState) => {
@@ -20,7 +21,7 @@ export const sendProductRequestMail =
         },
       };
       const { data } = await axios.post(
-        `${process.env.REACT_APP_PRODUCTION_URL}/api/send_mail/product_request`,
+        `${BASE_URL()}/api/send_mail/product_request`,
         request_body,
         config
       );
