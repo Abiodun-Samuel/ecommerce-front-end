@@ -6,17 +6,47 @@ import { useNavigate } from "react-router-dom";
 // import CheckoutSteps from "../components/CheckoutSteps";
 import Message from "../components/Message";
 import SectionHeader from "../components/SectionHeader";
-import { createOrder } from "../actions/orderActions";
+import { createOrder, payOrder } from "../actions/orderActions";
 import { Image } from "cloudinary-react";
 import { BsCartCheck } from "react-icons/bs";
 import { toastMessage } from "../utils/utils";
+import Loader from "../components/Loader";
+import axios from "axios";
+import { BASE_URL } from "../config";
+import { PaystackButton } from "react-paystack";
+import { RESET_CART_ITEM } from "../constant/cartConstants";
 
 const PlaceorderSreen = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [publickey, setPublickey] = useState("");
   const cart = useSelector((state) => state.cart);
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
   };
+  const { loading: loadingPay, success: successPay } = useSelector(
+    (state) => state.orderPay
+  );
+  const { userInfo } = useSelector((state) => state.userLogin);
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/");
+    }
+  }, []);
+
+  (async function addPaypalScript() {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    const { data: clientId } = await axios.get(
+      `${BASE_URL()}/api/payment/paystack_public_key`,
+      config
+    );
+    setPublickey(clientId);
+  })();
 
   // calculate price
   cart.itemsPrice = addDecimals(
@@ -30,7 +60,7 @@ const PlaceorderSreen = () => {
   );
   const orderCreate = useSelector((state) => state.orderCreate);
   const { order, success, error } = orderCreate;
-  const navigate = useNavigate();
+  console.log(order);
 
   const placeOrderHandler = () => {
     dispatch(
@@ -44,8 +74,21 @@ const PlaceorderSreen = () => {
         taxPrice: cart.taxPrice,
       })
     );
+    dispatch({ type: RESET_CART_ITEM });
     toastMessage("success", "Order has been placed successfully");
     navigate(`/orders`);
+  };
+  const componentProps = {
+    email: userInfo.email,
+    amount: addDecimals(order?.totalPrice * 100),
+    name: userInfo.name,
+    phone: userInfo.name,
+    publicKey: publickey,
+    text: "Place order with payment",
+    onSuccess: (reference) => {
+      dispatch(payOrder(orderId, reference));
+    },
+    onClose: () => alert("Wait! You need this oil, don't go!!!!"),
   };
 
   return (
@@ -137,14 +180,23 @@ const PlaceorderSreen = () => {
               </div>
 
               {error && <Message variant="danger">{error}</Message>}
-              <button
-                type="button"
-                className="btn_one w-100 mt-2"
-                disabled={cart.cartItems === 0}
-                onClick={placeOrderHandler}
-              >
-                <BsCartCheck className="mx-2" /> Place order
-              </button>
+              <div className="d-flex justify-content-between">
+                {loadingPay && <Loader fullPage={true} />}
+                {cart.cartItems !== 0 && (
+                  <PaystackButton
+                    className="paystack-button btn_two py-1 mt-2"
+                    {...componentProps}
+                  />
+                )}
+                <button
+                  type="button"
+                  className="btn_two mt-2 py-2 h5"
+                  disabled={cart.cartItems === 0}
+                  onClick={placeOrderHandler}
+                >
+                  <BsCartCheck className="mx-2" /> Place order without payment
+                </button>
+              </div>
             </div>
           </div>
         </div>

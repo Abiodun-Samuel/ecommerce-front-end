@@ -18,6 +18,7 @@ import {
 } from "../constant/orderConstants";
 import axios from "axios";
 import { PaystackButton } from "react-paystack";
+import SectionHeader from "../components/SectionHeader";
 
 const OrderScreen = () => {
   const { orderId } = useParams();
@@ -111,7 +112,25 @@ const OrderScreen = () => {
     <Message variant="danger">{error}</Message>
   ) : (
     <>
-      <h1>Order Id: {order._id}</h1>
+      <div className="row mb-3 mt-5">
+        <div className="col-lg-12">
+          <SectionHeader header="Order" />
+          <nav aria-label="breadcrumb">
+            <ol className="breadcrumb p-0 m-0 bg-transparent my-2 small">
+              <li className="breadcrumb-item">
+                <Link to="/">Home</Link>
+              </li>
+              <li className="breadcrumb-item">
+                <Link to="/orders">Orders</Link>
+              </li>
+              <li className="breadcrumb-item active" aria-current="page">
+                Order Id: {order._id}
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+
       <h3>Shipping</h3>
       <p>
         <b>Name:</b>

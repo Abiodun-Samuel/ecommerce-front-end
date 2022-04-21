@@ -66,7 +66,7 @@ const OrdersScreen = () => {
             <table className="table table-hover shadow-sm">
               <thead className="thead-dark">
                 <tr>
-                  <th scope="col">ID</th>
+                  <th scope="col">S/N</th>
                   <th scope="col">Date Ordered</th>
                   <th scope="col">Total Price</th>
                   <th scope="col">Paid</th>
@@ -77,8 +77,8 @@ const OrdersScreen = () => {
               <tbody>
                 {orders.map((order, index) => (
                   <tr key={order._id + index}>
-                    {/* <th scope="row">{index + 1}</th> */}
-                    <td>{order._id}</td>
+                    <th scope="row">{index + 1}</th>
+                    {/* <td>{order._id.substring(0, 2) + "..."}</td> */}
                     <td>{order.createdAt.substring(0, 10)}</td>
                     <td> &#8358;{order.totalPrice}</td>
                     <td>
