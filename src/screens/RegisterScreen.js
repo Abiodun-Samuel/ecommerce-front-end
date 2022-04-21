@@ -49,7 +49,7 @@ const RegisterScreen = () => {
         <div className="row">
           <div className="col-lg-6 col-md-7 col-sm-10">
             <div className="register-box bg-white rounded shadow p-4">
-              <SectionHeader header="Register" />
+              <SectionHeader header="Sign Up" />
               <form onSubmit={submitHandler}>
                 <input
                   type="text"

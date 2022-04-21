@@ -64,7 +64,7 @@ const LoginScreen = () => {
               </span>
 
               <button type="submit" className="btn_one w-100 mt-3">
-                <FaSignInAlt className="mx-3" /> Sign In
+                <FaSignInAlt className="mx-3" /> Login
               </button>
             </form>
           </div>
