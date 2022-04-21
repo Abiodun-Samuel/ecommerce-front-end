@@ -10,7 +10,5 @@ const Message = ({ type = "", message = "", children }) => {
     </>
   );
 };
-// Message.defaultProps = {
-//   variant: "info",
-// };
+
 export default Message;
