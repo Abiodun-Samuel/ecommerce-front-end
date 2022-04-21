@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  Link,
-  useSearchParams,
-  useNavigate,
-  useLocation,
-} from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../actions/userActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import SectionHeader from "../components/SectionHeader";
+import { FaSignInAlt } from "react-icons/fa";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -26,7 +23,7 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate(redirect);
+      navigate("/");
     }
   }, [userInfo, navigate, redirect]);
 
@@ -36,36 +33,49 @@ const LoginScreen = () => {
   };
 
   return (
-    <div>
-      <h2>Sign In</h2>
-
+    <div id="login" className="mt-5 p-5">
       {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader fullPage={true} />}
 
-      <form onSubmit={submitHandler}>
-        <input
-          type="email"
-          value={email}
-          placeholder="Enter your email"
-          className="form-control"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          className="form-control"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <input type="submit" value="Sign In" className="btn btn-primary" />
-      </form>
-      <div>
-        New Customer
-        <Link to="/register">Register</Link>
-        {/* <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
-          Register
-        </Link> */}
+      <div className="row">
+        <div className="col-lg-6 col-md-7 col-sm-10">
+          <div className="login-box bg-white rounded shadow p-4">
+            <SectionHeader header="Sign In" />
+            <form onSubmit={submitHandler}>
+              <input
+                type="email"
+                value={email}
+                placeholder="Enter your email"
+                className="bg-white"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                className=""
+                onChange={(e) => setPassword(e.target.value)}
+              />
+
+              <span className="text-danger small">
+                New Customer?
+                <Link to="/register"> Register</Link>
+              </span>
+
+              <button type="submit" className="btn_one w-100 mt-3">
+                <FaSignInAlt className="mx-3" /> Sign In
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
+
+      {/* <div>
+        <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
+          Register
+        </Link>
+      </div> */}
     </div>
   );
 };

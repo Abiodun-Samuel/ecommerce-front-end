@@ -59,6 +59,7 @@ select{
   border: 1px solid var(--blue-light);
   outline: 1px solid var(--blue-light);
   padding: 0.3rem 0.8rem;
+  border-radius: 5px;
 }
 
 /* header  */
@@ -767,9 +768,35 @@ label span:active {
   outline-color: transparent;
   border-bottom: 1.5px solid var(--red-1);
 }
-/* product details  */
-/* media queries  */
 
+/* login page  */
+#login, #register {
+  background: url("./images/bg/auth-bg.jpg") no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.register-box input,
+.login-box input{
+  border: 0;
+  outline: 0;
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.5rem 0.8rem;
+  border-bottom: 1.5px solid var(--blue-light-1);
+  background-color: white !important;
+}
+/* product details  */
+
+footer{
+  background-color: #242424;
+  text-align: center;
+  padding: 1rem;
+}
+footer p{
+  color: #fff;
+  font-size: 0.85rem;
+}
+/* media queries  */
 @media screen and (max-width: 576px) {
 }
 @media screen and (min-width: 576px) and (max-width: 768px) {

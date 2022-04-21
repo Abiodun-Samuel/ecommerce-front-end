@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { register } from "../actions/userActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import SectionHeader from "../components/SectionHeader";
+import { toastMessage } from "../utils/utils";
 
 const RegisterScreen = () => {
   const [name, setName] = useState("");
@@ -25,67 +27,72 @@ const RegisterScreen = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate(redirect);
+      navigate("/");
     }
   }, [userInfo, navigate, redirect]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setMessage("Password does not match");
+      toastMessage("error", "Password does not match");
     } else {
       dispatch(register(name, email, password));
     }
   };
 
   return (
-    <div>
-      <h2>Sign Up</h2>
+    <>
+      <div id="login" className="mt-5 mb-3 p-5">
+        {loading && <Loader fullPage={true} />}
+        {error && <Message variant="danger">{error}</Message>}
 
-      {error && <Message variant="danger">{error}</Message>}
-      {message && <Message variant="danger">{message}</Message>}
-      {loading && <Loader></Loader>}
+        <div className="row">
+          <div className="col-lg-6 col-md-7 col-sm-10">
+            <div className="register-box bg-white rounded shadow p-4">
+              <SectionHeader header="Register" />
+              <form onSubmit={submitHandler}>
+                <input
+                  type="text"
+                  value={name}
+                  placeholder="Enter your name"
+                  className=""
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <input
+                  type="email"
+                  value={email}
+                  placeholder="Enter your email"
+                  className=""
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  className=""
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <input
+                  type="password"
+                  placeholder="Confirm Password"
+                  value={confirmPassword}
+                  className=""
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                <span className="text-danger small">
+                  Already registered?
+                  <Link to="/login"> Login</Link>
+                </span>
 
-      <form onSubmit={submitHandler}>
-        <input
-          type="text"
-          value={name}
-          placeholder="Enter your name"
-          className="form-control"
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="email"
-          value={email}
-          placeholder="Enter your email"
-          className="form-control"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          className="form-control"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="confirm Password"
-          value={confirmPassword}
-          className="form-control"
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-        <input type="submit" value="Sign Up" className="btn btn-primary" />
-      </form>
-
-      <div>
-        Have an account?
-        <Link to="/login">Login</Link>
-        {/* <Link to={redirect ? `/login?redirect=${redirect}` : "/login"}>
-          Login
-        </Link> */}
+                <button type="submit" className="btn_one w-100 mt-3">
+                  Register
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
