@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { saveShippingAddress } from "../actions/cartActions";
 import CheckoutSteps from "../components/CheckoutSteps";
+import SectionHeader from "../components/SectionHeader";
 
 const ShippingScreen = () => {
   const cart = useSelector((state) => state.cart);
@@ -13,15 +14,15 @@ const ShippingScreen = () => {
   const [searchParams] = useSearchParams();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
-  let redirect;
-  searchParams.has("redirect")
-    ? (redirect = "/" + searchParams.get("redirect"))
-    : (redirect = "/");
+  // let redirect;
+  // searchParams.has("redirect")
+  //   ? (redirect = "/" + searchParams.get("redirect"))
+  //   : (redirect = "/");
   useEffect(() => {
     if (!userInfo) {
-      navigate(redirect, { replace: true });
+      navigate("/login");
     }
-  }, [userInfo, navigate, redirect]);
+  }, [userInfo, navigate]);
 
   const [address, setAddress] = useState(shippingAddress.address);
   const [city, setCity] = useState(shippingAddress.city);
@@ -36,10 +37,12 @@ const ShippingScreen = () => {
 
   return (
     <>
-      <div>
-        <CheckoutSteps step1 step2 />
-        <h1>Shipping</h1>
+      <div className="row mb-3 mt-5">
+        <div className="col-lg-12">
+          <SectionHeader header="Shipping" />
+        </div>
       </div>
+
       <form onSubmit={submitHandler}>
         <input
           type="text"
