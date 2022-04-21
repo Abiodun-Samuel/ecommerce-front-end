@@ -14,7 +14,7 @@ import Loader from "../components/Loader";
 import axios from "axios";
 import { BASE_URL } from "../config";
 import { PaystackButton } from "react-paystack";
-import { RESET_CART_ITEM } from "../constant/cartConstants";
+import { resetCart } from "../actions/cartActions";
 
 const PlaceorderSreen = () => {
   const dispatch = useDispatch();
@@ -32,7 +32,7 @@ const PlaceorderSreen = () => {
     if (!userInfo) {
       navigate("/");
     }
-  }, []);
+  }, [userInfo, navigate]);
 
   (async function addPaypalScript() {
     const config = {
@@ -74,7 +74,7 @@ const PlaceorderSreen = () => {
         taxPrice: cart.taxPrice,
       })
     );
-    dispatch({ type: RESET_CART_ITEM });
+    dispatch(resetCart());
     toastMessage("success", "Order has been placed successfully");
     navigate(`/orders`);
   };
@@ -86,7 +86,7 @@ const PlaceorderSreen = () => {
     publicKey: publickey,
     text: "Place order with payment",
     onSuccess: (reference) => {
-      dispatch(payOrder(orderId, reference));
+      // dispatch(payOrder(orderId, reference));
     },
     onClose: () => alert("Wait! You need this oil, don't go!!!!"),
   };
@@ -117,7 +117,7 @@ const PlaceorderSreen = () => {
 
       <div className="shipping mb-3">
         <div className="row">
-          <div className="col-lg-6 col-md-10 col-sm-12">
+          <div className="col-lg-6 col-md-12 col-sm-12">
             <div className="shipping-box bg-white p-4 shadow rounded">
               <h6 className="text-primary">Order Details</h6>
               <hr />

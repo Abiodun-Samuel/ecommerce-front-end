@@ -62,9 +62,6 @@ select{
   border-radius: 5px;
 }
 
-
-
-
 /* header  */
 .navbar-brand {
   text-transform: capitalize;
@@ -481,7 +478,7 @@ ol.carousel-indicators li.active {
   border: 1.5px solid var(--blue);
   outline: 1.5px solid var(--blue);
   color: var(--white);
-  padding: 0.25rem 0.5rem;
+  padding: 0.35rem 0.5rem;
   font-size: 0.8rem;
   letter-spacing: 0.5px;
   box-shadow: var(--shadow-1);
@@ -506,7 +503,7 @@ ol.carousel-indicators li.active {
   outline: 1.5px solid var(--blue);
   outline-offset: 3px;
   color: var(--white);
-  padding: 0.3rem 0.5rem;
+  padding: 0.35rem 0.5rem;
   font-size: 0.9rem;
   font-weight: bold;
   letter-spacing: 0.5px;
@@ -531,7 +528,7 @@ ol.carousel-indicators li.active {
   outline: 1.5px solid var(--red-1);
   outline-offset: 3px;
   color: var(--white);
-  padding: 0.25rem 0.5rem;
+  padding: 0.35rem 0.5rem;
   font-size: 0.8rem;
   letter-spacing: 0.5px;
   box-shadow: var(--shadow-1);

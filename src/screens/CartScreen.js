@@ -90,12 +90,10 @@ const CartScreen = () => {
                         <select
                           value={product.quantity}
                           onChange={(e) => {
-                            dispatch(
-                              addToCart(product.product, e.target.value)
-                            );
+                            dispatch(addToCart(product.slug, e.target.value));
                             toastMessage(
                               "success",
-                              `You have changed ${product.product}'s quantity to (${e.target.value})`
+                              `You have changed ${product.name}'s quantity to (${e.target.value})`
                             );
                           }}
                         >
@@ -108,7 +106,7 @@ const CartScreen = () => {
                       </td>
                       <td className="d-flex align-items-center">
                         <Link
-                          to={`/product/${product.product}`}
+                          to={`/product/${product.slug}`}
                           className="table_edit_btn"
                         >
                           <AiFillEye />
