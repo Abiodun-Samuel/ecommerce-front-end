@@ -12,6 +12,7 @@ import SectionHeader from "../components/SectionHeader";
 import { AiFillDelete, AiFillEye } from "react-icons/ai";
 import { BsFillBagCheckFill } from "react-icons/bs";
 import { Image } from "cloudinary-react";
+import { toastMessage } from "../utils/utils";
 
 const CartScreen = () => {
   const { id } = useParams();
@@ -28,9 +29,12 @@ const CartScreen = () => {
       dispatch(addToCart(productId, quantity));
     }
   }, [dispatch, productId, quantity]);
-  const removeFromCartHandler = (id) => {
+
+  const removeFromCartHandler = (id, product) => {
     dispatch(removeFromCart(id));
+    toastMessage("success", `${product} has been removed from your cart`);
   };
+
   const navigate = useNavigate();
   const checkOutHandler = () => {
     navigate("/login?redirect=shipping");
@@ -44,7 +48,7 @@ const CartScreen = () => {
       </div>
 
       <div className="row">
-        <div className="col-lg-9 my-2">
+        <div className="col-lg-9 col-md-8 col-sm-8 my-3">
           {cartItems.length === 0 ? (
             <Message type="danger">
               Your cart is empty. <Link to="/">Home</Link>
@@ -57,8 +61,8 @@ const CartScreen = () => {
                     <th scope="col">S/N</th>
                     <th scope="col">Image</th>
                     <th scope="col">Product</th>
+                    <th scope="col">Stock</th>
                     <th scope="col">Price</th>
-                    <th scope="col">In Stock</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Action</th>
                   </tr>
@@ -79,14 +83,20 @@ const CartScreen = () => {
                         />
                       </td>
                       <td>{product.name}</td>
-                      <td> &#8358; {product.price}</td>
                       <td> {product.countInStock}</td>
+                      <td> &#8358; {product.price}</td>
                       <td>
                         <select
                           value={product.quantity}
-                          onChange={(e) =>
-                            dispatch(addToCart(product.product, e.target.value))
-                          }
+                          onChange={(e) => {
+                            dispatch(
+                              addToCart(product.product, e.target.value)
+                            );
+                            toastMessage(
+                              "success",
+                              `You have changed ${product.product}'s quantity to (${e.target.value})`
+                            );
+                          }}
                         >
                           {[...Array(product.countInStock).keys()].map((x) => (
                             <option key={x + 1} value={x + 1}>
@@ -103,7 +113,9 @@ const CartScreen = () => {
                           <AiFillEye />
                         </Link>
                         <button
-                          onClick={() => removeFromCartHandler(product.product)}
+                          onClick={() =>
+                            removeFromCartHandler(product.product, product.name)
+                          }
                           className="table_del_btn"
                         >
                           <AiFillDelete />
@@ -117,7 +129,7 @@ const CartScreen = () => {
           )}
         </div>
 
-        <div className="col-lg-3 my-2">
+        <div className="col-lg-3 col-md-4 col-sm-4 my-3">
           <div className="table-responsive">
             <table className="table table-hover shadow bg-white">
               <thead className="thead-dark text-center">
@@ -154,64 +166,25 @@ const CartScreen = () => {
                     </span>
                   </td>
                 </tr>
-                <tr>
-                  <td>
-                    <button
-                      onClick={checkOutHandler}
-                      className="btn_one w-100"
-                      type="button"
-                      disabled={cartItems.length === 0}
-                    >
-                      <BsFillBagCheckFill className="mx-2" /> Check Out
-                    </button>
-                  </td>
-                </tr>
+                {cartItems.length !== 0 && (
+                  <tr>
+                    <td>
+                      <button
+                        onClick={checkOutHandler}
+                        className="btn_one w-100"
+                        type="button"
+                        disabled={cartItems.length === 0}
+                      >
+                        <BsFillBagCheckFill className="mx-2" /> Check Out
+                      </button>
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
         </div>
       </div>
-
-      {/* <h2>
-              
-
-      {/* <div>
-      <Row>
-        <Col md={8}>
-          <h1>Shopping Cart</h1>
-          {cartItems.length === 0 ? (
-            <Message>
-              Your cart is empty. <Link to="/">Go Back</Link>
-            </Message>
-          ) : (
-            <ListGroup variant="flush">
-              {cartItems.map((item) => (
-                <ListGroup.Item key={item.product}>
-                
-                  
-                    <Col md={2}>{item.price}</Col>
-                    <Col md={2}>
-                     
-                    </Col>
-                    <Col md={2}>
-                      <Button
-                        type="button"
-                        variant="light"
-                        onClick={() => removeFromCartHandler(item.product)}
-                      >
-                        Remove
-                      </Button>
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          )}
-        </Col>
-        
-        </Col>
-      </Row>
-    </div> */}
     </>
   );
 };
