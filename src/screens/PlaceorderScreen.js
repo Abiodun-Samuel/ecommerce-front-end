@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { saveShippingAddress } from "../actions/cartActions";
 import CheckoutSteps from "../components/CheckoutSteps";
 import Message from "../components/Message";
+import SectionHeader from "../components/SectionHeader";
 import { createOrder } from "../actions/orderActions";
 
 const PlaceorderSreen = () => {
@@ -28,7 +29,6 @@ const PlaceorderSreen = () => {
   const { order, success, error } = orderCreate;
   const navigate = useNavigate();
 
-
   const placeOrderHandler = () => {
     dispatch(
       createOrder({
@@ -45,9 +45,41 @@ const PlaceorderSreen = () => {
   };
 
   return (
-    <div>
-      <CheckoutSteps step1 step2 step3 step4 />
-      <h2>Shipping</h2>
+    <>
+      <div className="row mb-3 mt-5">
+        <div className="col-lg-12">
+          <SectionHeader header="Order" />
+          <nav aria-label="breadcrumb">
+            <ol className="breadcrumb p-0 m-0 bg-transparent my-2 small">
+              <li className="breadcrumb-item">
+                <Link to="/">Home</Link>
+              </li>
+              <li className="breadcrumb-item">
+                <Link to="/shipping">Shipping</Link>
+              </li>
+              <li className="breadcrumb-item">
+                <Link to="/payment">Payment</Link>
+              </li>
+              <li className="breadcrumb-item active" aria-current="page">
+                Order
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+
+      <div className="shipping mb-3">
+        <div className="row">
+          <div className="col-lg-6 col-md-10 col-sm-12">
+            <div className="shipping-box bg-white p-4 shadow rounded">
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+    /* <div>
+     
       <p>
         <strong>Address:</strong>
         {cart.shippingAddress.address}, {cart.shippingAddress.city}
@@ -89,7 +121,7 @@ const PlaceorderSreen = () => {
       >
         Place order
       </button>
-    </div>
+    </div> */
   );
 };
 
