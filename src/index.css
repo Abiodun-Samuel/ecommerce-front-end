@@ -54,6 +54,13 @@ h3 {
   color: var(--black);
 }
 
+/* select option  */
+select{
+  border: 1px solid var(--blue-light);
+  outline: 1px solid var(--blue-light);
+  padding: 0.3rem 0.8rem;
+}
+
 /* header  */
 .navbar-brand {
   text-transform: capitalize;

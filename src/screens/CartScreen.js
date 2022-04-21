@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Link,
   useParams,
@@ -56,9 +56,10 @@ const CartScreen = () => {
                   <tr>
                     <th scope="col">S/N</th>
                     <th scope="col">Image</th>
-                    <th scope="col">Price (2)</th>
+                    <th scope="col">Product</th>
                     <th scope="col">Price</th>
                     <th scope="col">In Stock</th>
+                    <th scope="col">Quantity</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -79,8 +80,22 @@ const CartScreen = () => {
                       </td>
                       <td>{product.name}</td>
                       <td> &#8358; {product.price}</td>
-                      <td>{product.countInStock}</td>
-                      <td className="d-flex align-items-center justify-content-center">
+                      <td> {product.countInStock}</td>
+                      <td>
+                        <select
+                          value={product.quantity}
+                          onChange={(e) =>
+                            dispatch(addToCart(product.product, e.target.value))
+                          }
+                        >
+                          {[...Array(product.countInStock).keys()].map((x) => (
+                            <option key={x + 1} value={x + 1}>
+                              {x + 1}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td className="d-flex align-items-center">
                         <Link
                           to={`/product/${product.product}`}
                           className="table_edit_btn"
@@ -104,25 +119,39 @@ const CartScreen = () => {
 
         <div className="col-lg-3 my-2">
           <div className="table-responsive">
-            <table className="table table-hover shadow-sm text-center">
-              <thead className="thead-dark">
+            <table className="table table-hover shadow bg-white">
+              <thead className="thead-dark text-center">
                 <tr>
-                  <th scope="col h5">
-                    Subtotal (
-                    {cartItems.reduce((acc, item) => acc + item.quantity, 0)})
+                  <th scope="col" className="h5">
+                    Total
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="h6">
                 <tr>
                   <td>
-                    &#8358;
-                    {cartItems
-                      .reduce(
-                        (acc, item) => acc + item.quantity * item.price,
+                    <b>Quantity:</b>{" "}
+                    <span className="text-primary">
+                      {cartItems.reduce(
+                        (acc, item) => Number(acc) + Number(item.quantity),
                         0
-                      )
-                      .toFixed(2)}
+                      )}
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <b> Price:</b>
+                    <span className="text-primary">
+                      {" "}
+                      &#8358;
+                      {cartItems
+                        .reduce(
+                          (acc, item) => acc + item.quantity * item.price,
+                          0
+                        )
+                        .toFixed(2)}
+                    </span>
                   </td>
                 </tr>
                 <tr>
@@ -144,23 +173,7 @@ const CartScreen = () => {
       </div>
 
       {/* <h2>
-                  Subtotal (
-                  {cartItems.reduce((acc, item) => acc + item.quantity, 0)})
-                </h2>
-                <span>
-                  &#8358;
-                  {cartItems
-                    .reduce((acc, item) => acc + item.quantity * item.price, 0)
-                    .toFixed(2)}
-                </span>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Button
-                  onClick={checkOutHandler}
-                  className="btn btn-block"
-                  type="button"
-                  disabled={cartItems.length === 0}
-                ></Button> */}
+              
 
       {/* <div>
       <Row>
@@ -178,19 +191,7 @@ const CartScreen = () => {
                   
                     <Col md={2}>{item.price}</Col>
                     <Col md={2}>
-                      <Form.Control
-                        as="select"
-                        value={item.quantity}
-                        onChange={(e) =>
-                          dispatch(addToCart(item.product, e.target.value))
-                        }
-                      >
-                        {[...Array(item.countInStock).keys()].map((x) => (
-                          <option key={x + 1} value={x + 1}>
-                            {x + 1}
-                          </option>
-                        ))}
-                      </Form.Control>
+                     
                     </Col>
                     <Col md={2}>
                       <Button
