@@ -24,7 +24,6 @@ import { BASE_URL } from "../config";
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
     dispatch({ type: ORDER_CREATE_REQUEST });
-
     const {
       userLogin: { userInfo },
     } = getState();
@@ -35,11 +34,13 @@ export const createOrder = (order) => async (dispatch, getState) => {
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
+
     const { data } = await axios.post(
       `${BASE_URL()}/api/orders`,
       order,
       config
     );
+    
     dispatch({ type: ORDER_CREATE_SUCCESS, payload: data });
   } catch (error) {
     dispatch({

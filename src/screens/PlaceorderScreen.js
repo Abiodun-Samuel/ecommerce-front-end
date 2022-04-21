@@ -32,6 +32,16 @@ const PlaceorderSreen = () => {
   const { order, success, error } = orderCreate;
   const navigate = useNavigate();
 
+  // console.log({
+  //   orderItems: cart.cartItems,
+  //   shippingAddress: cart.shippingAddress,
+  //   paymentMethod: cart.paymentMethod,
+  //   itemsPrice: cart.itemsPrice,
+  //   totalPrice: cart.totalPrice,
+  //   shippingPrice: cart.shippingPrice,
+  //   taxPrice: cart.taxPrice,
+  // });
+
   const placeOrderHandler = () => {
     dispatch(
       createOrder({

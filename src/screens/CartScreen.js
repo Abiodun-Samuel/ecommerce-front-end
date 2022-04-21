@@ -70,7 +70,7 @@ const CartScreen = () => {
                 </thead>
                 <tbody>
                   {cartItems.map((product, index) => (
-                    <tr key={product._id + index}>
+                    <tr key={product.name + index}>
                       <th scope="row">{index + 1}</th>
                       <td>
                         <Image
