@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HomeScreen from "./screens/HomeScreen";
 import { ToastContainer } from "react-toastify";
+import OrdersScreen from "./screens/OrdersScreen";
 // import Loader from "./components/Loader";
 // import ReCAPTCHA from "react-google-recaptcha";
 
@@ -45,6 +46,7 @@ function App() {
             <Route path="/shipping" element={<ShippingScreen />} />
             <Route path="/payment" element={<PaymentScreen />} />
             <Route path="/place-order" element={<PlaceorderScreen />} />
+            <Route path="/orders" element={<OrdersScreen />} />
             <Route path="/order/:orderId" element={<OrderScreen />} />
             <Route path="/profile" element={<ProfileScreen />} />
             <Route path="/admin/users" element={<UserListScreen />} />

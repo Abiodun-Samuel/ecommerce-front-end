@@ -32,16 +32,6 @@ const PlaceorderSreen = () => {
   const { order, success, error } = orderCreate;
   const navigate = useNavigate();
 
-  // console.log({
-  //   orderItems: cart.cartItems,
-  //   shippingAddress: cart.shippingAddress,
-  //   paymentMethod: cart.paymentMethod,
-  //   itemsPrice: cart.itemsPrice,
-  //   totalPrice: cart.totalPrice,
-  //   shippingPrice: cart.shippingPrice,
-  //   taxPrice: cart.taxPrice,
-  // });
-
   const placeOrderHandler = () => {
     dispatch(
       createOrder({
@@ -55,7 +45,7 @@ const PlaceorderSreen = () => {
       })
     );
     toastMessage("success", "Order has been placed successfully");
-    navigate(`/orderlist`);
+    navigate(`/orders`);
   };
 
   return (
@@ -114,12 +104,10 @@ const PlaceorderSreen = () => {
                         alt={item.name}
                         className="img-fluid mr-2"
                       />
-                      <Link className="mx-1" to={`/product/${item.product}`}>
-                        {item.name}
-                      </Link>
+                      <span className="mx-1">{item.name}</span>
                       <span>
-                        {item.quantity} x &#8358;{item.price} = &#8358;
-                        {item.quantity * item.price}
+                        ({item.quantity} x &#8358;{item.price} = &#8358;
+                        {item.quantity * item.price})
                       </span>
                     </li>
                   ))}
