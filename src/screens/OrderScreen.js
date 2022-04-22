@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { saveShippingAddress } from "../actions/cartActions";
+import { resetCart, saveShippingAddress } from "../actions/cartActions";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import Time from "../components/Time";
@@ -20,6 +20,7 @@ import axios from "axios";
 import { PaystackButton } from "react-paystack";
 import SectionHeader from "../components/SectionHeader";
 import { Image } from "cloudinary-react";
+import { customSweetAlert, toastMessage } from "../utils/utils";
 
 const OrderScreen = () => {
   const { orderId } = useParams();
@@ -99,8 +100,16 @@ const OrderScreen = () => {
     text: "Pay Now",
     onSuccess: (reference) => {
       dispatch(payOrder(orderId, reference));
+      toastMessage("success", "Order has been placed successfully");
+      dispatch(resetCart());
     },
-    onClose: () => alert("Wait! You need this oil, don't go!!!!"),
+    onClose: () => {
+      customSweetAlert(
+        "Caution",
+        "Do you want to cancel this transaction?",
+        "error"
+      );
+    },
   };
 
   const deliverHandler = () => {

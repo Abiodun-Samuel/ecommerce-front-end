@@ -96,9 +96,9 @@ const Header = () => {
                       <Link className="dropdown-item" to="/orders">
                         <BsFillBasket2Fill className="mr-2" /> Orders
                       </Link>
-                      <Link className="dropdown-item" to="/inbox">
+                      {/* <Link className="dropdown-item" to="/inbox">
                         <AiOutlineMail className="mr-2" /> Inbox
-                      </Link>
+                      </Link> */}
                       <hr />
                       <button
                         className="dropdown-item shadow auth"
@@ -130,7 +130,7 @@ const Header = () => {
                   <div>Cart</div>
                 </Link>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <Link className="nav-link" to="/wishlist">
                   <div className="nav-icon">
                     <span className="count shadow-sm">
@@ -140,7 +140,7 @@ const Header = () => {
                   </div>
                   <div>Wishlist</div>
                 </Link>
-              </li>
+              </li> */}
               {userInfo && userInfo.isAdmin && (
                 <li className="nav-item dropdown">
                   <Link

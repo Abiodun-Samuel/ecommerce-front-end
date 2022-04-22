@@ -163,7 +163,7 @@ const ProductEditScreen = () => {
       ) : (
         <div className="update_product">
           <div className="row mt-5">
-            <div className="col-lg-10">
+            <div className="col-lg-8 col-md-10">
               <div className="shadow p-4 bg-white">
                 <form onSubmit={submitHandler}>
                   <label htmlFor="">Product Title</label>
