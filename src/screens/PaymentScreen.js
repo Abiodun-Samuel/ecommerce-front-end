@@ -67,7 +67,7 @@ const PaymentScreen = () => {
                   onChange={(e) => setPaymentMethod(e.target.value)}
                 >
                   <option value="Paystack"> Paystack </option>
-                  <option disabled value="PayPal"> PayPal </option>
+                  <option value="PayPal"> PayPal </option>
                 </select>
 
                 <button type="submit" className="btn_one mt-3 w-100">

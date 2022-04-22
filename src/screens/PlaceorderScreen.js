@@ -2,14 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-// import { saveShippingAddress } from "../actions/cartActions";
-// import CheckoutSteps from "../components/CheckoutSteps";
 import Message from "../components/Message";
 import SectionHeader from "../components/SectionHeader";
-import { createOrder, payOrder } from "../actions/orderActions";
+import { createOrder, createOrderAndPay } from "../actions/orderActions";
 import { Image } from "cloudinary-react";
 import { BsCartCheck } from "react-icons/bs";
-import { toastMessage } from "../utils/utils";
+import { customSweetAlert, toastMessage } from "../utils/utils";
 import Loader from "../components/Loader";
 import axios from "axios";
 import { BASE_URL } from "../config";
@@ -28,26 +26,6 @@ const PlaceorderSreen = () => {
     (state) => state.orderPay
   );
   const { userInfo } = useSelector((state) => state.userLogin);
-  useEffect(() => {
-    if (!userInfo) {
-      navigate("/");
-    }
-  }, [userInfo, navigate]);
-
-  (async function addPaypalScript() {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-    const { data: clientId } = await axios.get(
-      `${BASE_URL()}/api/payment/paystack_public_key`,
-      config
-    );
-    setPublickey(clientId);
-  })();
-
   // calculate price
   cart.itemsPrice = addDecimals(
     cart.cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
@@ -60,7 +38,25 @@ const PlaceorderSreen = () => {
   );
   const orderCreate = useSelector((state) => state.orderCreate);
   const { order, success, error } = orderCreate;
-  console.log(order);
+
+  useEffect(() => {
+    if (!userInfo) {
+      navigate("/");
+    }
+    (async function addPaypalScript() {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+      const { data: clientId } = await axios.get(
+        `${BASE_URL()}/api/payment/paystack_public_key`,
+        config
+      );
+      setPublickey(clientId);
+    })();
+  }, [userInfo, navigate]);
 
   const placeOrderHandler = () => {
     dispatch(
@@ -74,25 +70,45 @@ const PlaceorderSreen = () => {
         taxPrice: cart.taxPrice,
       })
     );
-    dispatch(resetCart());
     toastMessage("success", "Order has been placed successfully");
-    navigate(`/orders`);
+    dispatch(resetCart());
   };
   const componentProps = {
     email: userInfo.email,
-    amount: addDecimals(order?.totalPrice * 100),
+    amount: addDecimals(cart.totalPrice * 100),
     name: userInfo.name,
     phone: userInfo.name,
     publicKey: publickey,
     text: "Place order with payment",
     onSuccess: (reference) => {
-      // dispatch(payOrder(orderId, reference));
+      dispatch(
+        createOrderAndPay(
+          {
+            orderItems: cart.cartItems,
+            shippingAddress: cart.shippingAddress,
+            paymentMethod: cart.paymentMethod,
+            itemsPrice: cart.itemsPrice,
+            totalPrice: cart.totalPrice,
+            shippingPrice: cart.shippingPrice,
+            taxPrice: cart.taxPrice,
+          },
+          reference
+        )
+      );
+      toastMessage("success", "Order has been placed successfully");
+      dispatch(resetCart());
     },
-    onClose: () => alert("Wait! You need this oil, don't go!!!!"),
+    onClose: () =>
+      customSweetAlert(
+        "Caution",
+        "Do you want to cancel this transaction?",
+        "error"
+      ),
   };
 
   return (
     <>
+      {loadingPay && <Loader fullPage={true} />}
       <div className="row mb-3 mt-5">
         <div className="col-lg-12">
           <SectionHeader header="Order" />
@@ -117,7 +133,7 @@ const PlaceorderSreen = () => {
 
       <div className="shipping mb-3">
         <div className="row">
-          <div className="col-lg-6 col-md-12 col-sm-12">
+          <div className="col-lg-8 col-md-12 col-sm-12">
             <div className="shipping-box bg-white p-4 shadow rounded">
               <h6 className="text-primary">Order Details</h6>
               <hr />
@@ -128,12 +144,15 @@ const PlaceorderSreen = () => {
                 {/* {cart.shippingAddress.postalCode}, */}
               </p>
               <p className="my-0 py-0">
-                <strong>Payment Method: </strong> {cart.paymentMethod}
+                <strong>Payment Method: </strong>
+                {!cart.paymentMethod
+                  ? (cart.paymentMethod = "Paystack")
+                  : cart.paymentMethod}
               </p>
               <hr />
               <h6 className="text-primary">Order Items</h6>
               {cart.cartItems.length === 0 ? (
-                <Message>Your cart is empty</Message>
+                <Message type="danger" message="Your cart is empty" />
               ) : (
                 <ul>
                   {cart.cartItems.map((item, index) => (
@@ -180,23 +199,32 @@ const PlaceorderSreen = () => {
               </div>
 
               {error && <Message variant="danger">{error}</Message>}
-              <div className="d-flex justify-content-between">
-                {loadingPay && <Loader fullPage={true} />}
-                {cart.cartItems !== 0 && (
-                  <PaystackButton
-                    className="paystack-button btn_two py-1 mt-2"
-                    {...componentProps}
-                  />
-                )}
-                <button
-                  type="button"
-                  className="btn_two mt-2 py-2 h5"
-                  disabled={cart.cartItems === 0}
-                  onClick={placeOrderHandler}
-                >
-                  <BsCartCheck className="mx-2" /> Place order without payment
-                </button>
-              </div>
+              {cart.cartItems.length !== 0 && (
+                <div className="row ">
+                  <div className="col-6  my-2">
+                    {cart.cartItems !== 0 && (
+                      <PaystackButton
+                        className="paystack-button btn_two py-1 mt-2"
+                        {...componentProps}
+                      />
+                    )}
+                  </div>
+                  <div className="col-6 my-2">
+                    <button
+                      type="button"
+                      className="btn_two mt-2 py-2 h5"
+                      disabled={cart.cartItems === 0}
+                      onClick={placeOrderHandler}
+                    >
+                      <BsCartCheck className="mx-2" /> Place order without
+                      payment
+                    </button>
+                  </div>
+                </div>
+              )}
+              <Link to="/orders" className="w-100 mt-3 btn_one">
+                My Orders
+              </Link>
             </div>
           </div>
         </div>

@@ -7,9 +7,11 @@ export const customSweetAlert = (title, text, icon, btn_text, onSuccess) => {
     button: "close",
     content: (
       <div className="d-flex justify-content-center">
-        <button className="btn_one" onClick={onSuccess}>
-          {btn_text}
-        </button>
+        {onSuccess && (
+          <button className="btn_one" onClick={onSuccess}>
+            {btn_text}
+          </button>
+        )}
       </div>
     ),
   });

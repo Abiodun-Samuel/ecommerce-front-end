@@ -22,10 +22,14 @@ const OrdersScreen = () => {
   const orderList = useSelector((state) => state.orderList);
   const { loading, error, orders } = orderList;
 
+  const myOrders = orders.filter((order) => {
+    return order.user._id === userInfo._id;
+  });
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) {
+    if (userInfo) {
       dispatch(listOrders());
     } else {
       navigate("/login");
@@ -62,55 +66,62 @@ const OrdersScreen = () => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
-          <div className="table-responsive ">
-            <table className="table table-hover shadow-sm">
-              <thead className="thead-dark">
-                <tr>
-                  <th scope="col">S/N</th>
-                  <th scope="col">Date Ordered</th>
-                  <th scope="col">Total Price</th>
-                  <th scope="col">Paid</th>
-                  <th scope="col">Delivered</th>
-                  <th scope="col">Order Details</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map((order, index) => (
-                  <tr key={order._id + index}>
-                    <th scope="row">{index + 1}</th>
-                    {/* <td>{order._id.substring(0, 2) + "..."}</td> */}
-                    <td>{order.createdAt.substring(0, 10)}</td>
-                    <td> &#8358;{order.totalPrice}</td>
-                    <td>
-                      {order.isPaid ? (
-                        <>
-                          <Message type="success">
-                            Paid on ({order.paidAt.substring(0, 10)})
-                          </Message>
-                        </>
-                      ) : (
-                        <Message type="danger" message="Not Paid" />
-                      )}
-                    </td>
-                    <td>
-                      {order.isDeliverd ? (
-                        <Message type="success">
-                          Delivered on ({order.deliveredAt.substring(0, 10)})
-                        </Message>
-                      ) : (
-                        <Message type="danger" message="Not Delivered" />
-                      )}
-                    </td>
-                    <td>
-                      <Link className="btn_one" to={`/order/${order._id}`}>
-                        <AiFillEye className="mx-2" /> Details
-                      </Link>
-                    </td>
+          {myOrders.length !== 0 ? (
+            <div className="table-responsive ">
+              <table className="table table-hover shadow-sm">
+                <thead className="thead-dark">
+                  <tr>
+                    <th scope="col">S/N</th>
+                    <th scope="col">Date Ordered</th>
+                    <th scope="col">Total Price</th>
+                    <th scope="col">Paid</th>
+                    <th scope="col">Delivered</th>
+                    <th scope="col">Order Details</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {orders.map((order, index) => (
+                    <tr key={order._id + index}>
+                      <th scope="row">{index + 1}</th>
+                      {/* <td>{order._id.substring(0, 2) + "..."}</td> */}
+                      <td>{order.createdAt.substring(0, 10)}</td>
+                      <td> &#8358;{order.totalPrice}</td>
+                      <td>
+                        {order.isPaid ? (
+                          <>
+                            <Message type="success">
+                              Paid on ({order.paidAt.substring(0, 10)})
+                            </Message>
+                          </>
+                        ) : (
+                          <Message type="danger" message="Not Paid" />
+                        )}
+                      </td>
+                      <td>
+                        {order.isDeliverd ? (
+                          <Message type="success">
+                            Delivered on ({order.deliveredAt.substring(0, 10)})
+                          </Message>
+                        ) : (
+                          <Message type="danger" message="Not Delivered" />
+                        )}
+                      </td>
+                      <td>
+                        <Link className="btn_one" to={`/order/${order._id}`}>
+                          <AiFillEye className="mx-2" /> Details
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <Message
+              type="danger"
+              message="You have  not placed any order yet"
+            />
+          )}
         </>
       )}
     </>
