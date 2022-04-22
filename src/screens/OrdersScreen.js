@@ -91,7 +91,7 @@ const OrdersScreen = () => {
                         {order.isPaid ? (
                           <>
                             <Message type="success">
-                              Paid on: {<Time time={order.paidAt} />} 
+                              Paid on: {<Time time={order.paidAt} />}
                             </Message>
                           </>
                         ) : (
@@ -101,7 +101,7 @@ const OrdersScreen = () => {
                       <td>
                         {order.isDelivered ? (
                           <Message type="success">
-                            Delivered on: ({<Time time={order.deliveredAt} />})
+                            Delivered on: {<Time time={order.deliveredAt} />}
                           </Message>
                         ) : (
                           <Message type="danger" message="Not Delivered" />

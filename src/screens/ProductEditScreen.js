@@ -10,6 +10,7 @@ import {
 } from "../constant/productConstants";
 import axios from "axios";
 import SectionHeader from "../components/SectionHeader";
+import { BASE_URL } from "../config";
 
 const ProductEditScreen = () => {
   const { slug } = useParams();
@@ -17,10 +18,8 @@ const ProductEditScreen = () => {
   const [price, setPrice] = useState(0);
   const [inflatedPrice, setInflatedPrice] = useState(0);
   const [image, setImage] = useState("");
-  const images = [
-    "ecommerce/dj2pmfuc6xamqmslkap8",
-    "ecommerce/topvcb5mhsprzufoscib",
-  ];
+  const [images, setImages] = useState([]);
+
   // const [images, setImages] = useState([]);
   const [category, setCategory] = useState("");
   const [category_slug, setCategorySlug] = useState("");
@@ -54,7 +53,7 @@ const ProductEditScreen = () => {
         setPrice(product.price);
         setInflatedPrice(product.inflatedPrice);
         setImage(product.image);
-        // setImages(product.images);
+        setImages(product.images);
         setBrand(product.brand);
         setCategory(product.category);
         setCategorySlug(product.category_slug);
@@ -96,12 +95,13 @@ const ProductEditScreen = () => {
         },
       };
       const { data } = await axios.post(
-        `${process.env.REACT_APP_PRODUCTION_URL}/api/upload/upload-cloudinary`,
+        `${BASE_URL()}/api/upload/upload-cloudinary`,
         JSON.stringify({ data: base64EncodedImage }),
         config
       );
       console.log(data);
       setImage(data.public_id);
+      setImages(data.public_id);
       setUpLoading(false);
     } catch (error) {
       console.error(error);
@@ -126,9 +126,27 @@ const ProductEditScreen = () => {
 
   return (
     <>
+      <div className="row mb-3 mt-5">
+        <div className="col-lg-12">
+          <SectionHeader header="Edit Product" />
+          <nav aria-label="breadcrumb">
+            <ol className="breadcrumb p-0 m-0 bg-transparent my-2 small">
+              <li className="breadcrumb-item">
+                <Link to="/">Home</Link>
+              </li>
+              <li className="breadcrumb-item">
+                <Link to="/admin/products">Products</Link>
+              </li>
+              <li className="breadcrumb-item active" aria-current="page">
+                Edit Product
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+
       <div className="row mt-5">
         <div className="col-lg-12">
-          <SectionHeader header="Update Product" />
           <div>
             {loadingUpdate && <Loader />}
             {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
@@ -206,7 +224,6 @@ const ProductEditScreen = () => {
                   <input type="file" onChange={uploadFileHandler} />
                   <span>Select Files</span>
                 </label>
-                {/* <input type="file" id="file" /> */}
                 {uploading && <Loader smallPage={true} />}
 
                 <input

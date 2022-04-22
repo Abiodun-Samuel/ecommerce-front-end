@@ -84,15 +84,25 @@ const ProductListScreen = () => {
 
   return (
     <>
-      <div className="row mb-1 mt-5">
+      <div className="row mb-3 mt-5">
         <div className="col-lg-12">
-          <SectionHeader header="All Products" />
-          <div className="d-flex justify-content-end">
-            <button onClick={createProductHandler} className="btn_one my-2">
-              <AiOutlinePlus className="mr-1" />
-              Product
-            </button>
-          </div>
+          <SectionHeader header="Products" />
+          <nav aria-label="breadcrumb">
+            <ol className="breadcrumb p-0 m-0 bg-transparent my-2 small">
+              <li className="breadcrumb-item">
+                <Link to="/">Home</Link>
+              </li>
+              <li className="breadcrumb-item active" aria-current="page">
+                Products
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div className="col-lg-12">
+          <button onClick={createProductHandler} className="btn_one my-2">
+            <AiOutlinePlus className="mr-1" />
+            Product
+          </button>
         </div>
       </div>
 
