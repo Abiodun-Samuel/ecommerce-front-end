@@ -596,7 +596,7 @@ ol.carousel-indicators li.active {
 }
 
 /* custom input file style  */
-label input[type="file"] {
+/* label input[type="file"] {
   display: none;
 }
 label span {
@@ -616,7 +616,7 @@ label span:hover {
 label span:active {
   background: linear-gradient(to top, #09f 0%, #024 100%);
   box-shadow: 1px 1px 0 #012;
-}
+} */
 /* custom input file style  */
 
 /* products  component */
@@ -805,6 +805,29 @@ label span:active {
   background-color: white !important;
 }
 /* shaipping page  */
+
+/* update product  */
+.update_product{
+  background: url("./images/bg/product-bg.jpg") no-repeat;
+  background-position: center;
+  background-size: cover;
+  padding: 1.3rem;
+}
+.update_product input, .update_product select{
+  border: 0;
+  outline: 0;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0.8rem;
+  border-bottom: 1.5px solid var(--blue-light-1);
+  background-color: white !important;
+}
+.update_product label {
+ font-size: 0.7rem;
+ color: var(--blue);
+ margin: 0;
+ padding: 0;
+}
 
 footer{
   background-color: #242424;

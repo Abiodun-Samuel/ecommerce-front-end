@@ -11,6 +11,8 @@ import {
 import axios from "axios";
 import SectionHeader from "../components/SectionHeader";
 import { BASE_URL } from "../config";
+import { getCategories } from "../actions/categoryActions";
+import { slugify } from "../utils/utils";
 
 const ProductEditScreen = () => {
   const { slug } = useParams();
@@ -41,7 +43,14 @@ const ProductEditScreen = () => {
     success: successUpdate,
   } = productUpdate;
 
+  const {
+    loading: loadingCategory,
+    error: errorCategory,
+    categories,
+  } = useSelector((state) => state.categoryList);
+
   useEffect(() => {
+    dispatch(getCategories());
     if (successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
       navigate("/admin/products");
@@ -79,7 +88,7 @@ const ProductEditScreen = () => {
         images,
         brand,
         category,
-        category_slug,
+        category_slug: slugify(category),
         countInStock,
         description,
       })
@@ -145,97 +154,110 @@ const ProductEditScreen = () => {
         </div>
       </div>
 
-      <div className="row mt-5">
-        <div className="col-lg-12">
-          <div>
-            {loadingUpdate && <Loader />}
-            {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
-            {loading ? (
-              <Loader />
-            ) : error ? (
-              <Message variant="danger">{error}</Message>
-            ) : (
-              <form onSubmit={submitHandler}>
-                <input
-                  type="text"
-                  value={name}
-                  placeholder="Enter your name"
-                  className="form-control"
-                  onChange={(e) => setName(e.target.value)}
-                />
-                <input
-                  type="number"
-                  value={price}
-                  placeholder="Enter your price"
-                  className="form-control"
-                  onChange={(e) => setPrice(e.target.value)}
-                />
-                <input
-                  type="number"
-                  value={inflatedPrice}
-                  placeholder="Enter your price(market price)"
-                  className="form-control"
-                  onChange={(e) => setInflatedPrice(e.target.value)}
-                />
-                <input
-                  type="text"
-                  value={image}
-                  placeholder="Enter your email"
-                  className="form-control"
-                  onChange={(e) => setImage(e.target.value)}
-                />
+      {loadingUpdate && <Loader fullPage={true} />}
+      {errorUpdate && <Message type="danger">{errorUpdate}</Message>}
+      {loading ? (
+        <Loader fullPage={true} />
+      ) : error ? (
+        <Message type="danger">{error}</Message>
+      ) : (
+        <div className="update_product">
+          <div className="row mt-5">
+            <div className="col-lg-10">
+              <div className="shadow p-4 bg-white">
+                <form onSubmit={submitHandler}>
+                  <label htmlFor="">Product Title</label>
+                  <input
+                    type="text"
+                    value={name}
+                    placeholder="Enter your name"
+                    className=""
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                  <label htmlFor="">Product Discount Price</label>
+                  <input
+                    type="number"
+                    value={price}
+                    placeholder="Enter your price"
+                    className=""
+                    onChange={(e) => setPrice(e.target.value)}
+                  />
+                  <label htmlFor="">Product Price(2)</label>
+                  <input
+                    type="number"
+                    value={inflatedPrice}
+                    placeholder="Enter your price(market price)"
+                    className=""
+                    onChange={(e) => setInflatedPrice(e.target.value)}
+                  />
+                  {/* <label htmlFor="">Product Price(2)</label>
+                  <input
+                    type="text"
+                    value={image}
+                    placeholder="Enter your email"
+                    className=""
+                    onChange={(e) => setImage(e.target.value)}
+                  /> */}
 
-                <input
-                  type="text"
-                  value={brand}
-                  placeholder="Enter your brand"
-                  className="form-control"
-                  onChange={(e) => setBrand(e.target.value)}
-                />
-                <input
-                  type="number"
-                  value={countInStock}
-                  placeholder="Enter your count in stock"
-                  className="form-control"
-                  onChange={(e) => setCountInStock(e.target.value)}
-                />
-                <input
-                  type="text"
-                  value={category}
-                  placeholder="Enter your category"
-                  className="form-control"
-                  onChange={(e) => setCategory(e.target.value)}
-                />
-                <input
-                  type="text"
-                  value={category_slug}
-                  placeholder="Enter your category"
-                  className="form-control"
-                  onChange={(e) => setCategorySlug(e.target.value)}
-                />
-                <input
-                  type="text"
-                  value={description}
-                  placeholder="Enter your description"
-                  className="form-control"
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-                <label>
-                  <input type="file" onChange={uploadFileHandler} />
-                  <span>Select Files</span>
-                </label>
-                {uploading && <Loader smallPage={true} />}
+                  <label htmlFor="">Product Brand</label>
+                  <input
+                    type="text"
+                    value={brand}
+                    placeholder="Enter your brand"
+                    className=""
+                    onChange={(e) => setBrand(e.target.value)}
+                  />
+                  <label htmlFor="">Product stock</label>
+                  <input
+                    type="number"
+                    value={countInStock}
+                    placeholder="Enter your count in stock"
+                    className=""
+                    onChange={(e) => setCountInStock(e.target.value)}
+                  />
+                  <label htmlFor="">Product Category</label>
+                  <select
+                    value={category}
+                    onChange={(e) => {
+                      setCategory(e.target.value);
+                    }}
+                  >
+                    {categories?.map((category, index) => (
+                      <option
+                        key={category + index}
+                        value={category.category_name}
+                      >
+                        {category.category_name}
+                      </option>
+                    ))}
+                  </select>
+                  <label htmlFor="">Product Description</label>
+                  <input
+                    type="text"
+                    value={description}
+                    placeholder="Enter your description"
+                    className=""
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                  <label htmlFor="">Product Image</label>
+                  <label>
+                    <input type="file" onChange={uploadFileHandler} />
+                  </label>
 
-                <input
-                  type="submit"
-                  value="Update"
-                  className="btn btn-primary"
-                />
-              </form>
-            )}
+                  {uploading && <Loader smallPage={true} />}
+                  <button
+                    type="submit"
+                    value="Update"
+                    className="btn_one mt-3 py-2 w-100"
+                  >
+                    Update
+                  </button>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
