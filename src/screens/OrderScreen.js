@@ -19,6 +19,7 @@ import {
 import axios from "axios";
 import { PaystackButton } from "react-paystack";
 import SectionHeader from "../components/SectionHeader";
+import { Image } from "cloudinary-react";
 
 const OrderScreen = () => {
   const { orderId } = useParams();
@@ -95,7 +96,7 @@ const OrderScreen = () => {
     name: userInfo.name,
     phone: userInfo.name,
     publicKey: publickey,
-    text: "Buy Now",
+    text: "Pay Now",
     onSuccess: (reference) => {
       dispatch(payOrder(orderId, reference));
     },
@@ -107,7 +108,7 @@ const OrderScreen = () => {
   };
 
   return loading ? (
-    <Loader fullPage="fullPage" imgHeight="80px" />
+    <Loader fullPage={true} />
   ) : error ? (
     <Message variant="danger">{error}</Message>
   ) : (
@@ -131,37 +132,130 @@ const OrderScreen = () => {
         </div>
       </div>
 
-      <h3>Shipping</h3>
-      <p>
-        <b>Name:</b>
-        {order?.user?.name}
-      </p>
-      <p>
-        <b>Email:</b>
-        {order?.user?.email}
-      </p>
-      <p>
-        <strong>Address:</strong>
-        {order?.shippingAddress?.address}, {order?.shippingAddress?.city}
-        {order?.shippingAddress?.postalCode},{order?.shippingAddress?.country}
-      </p>
-      {order.isDelivered ? (
-        <Message variant="success">
-          Delivered on: {<Time time={order.deliveredAt} />}
-        </Message>
-      ) : (
-        <Message variant="danger">Not Delivered</Message>
-      )}
-      <h4>Payment Method: {order.paymentMethod}</h4>
-      {order.isPaid ? (
-        <Message variant="success">
-          Paid on: {<Time time={order.paidAt} />}
-        </Message>
-      ) : (
-        <Message variant="danger">Not Paid</Message>
-      )}
+      <div className="shipping mb-3">
+        <div className="row">
+          <div className="col-lg-8 col-md-12 col-sm-12">
+            <div className="shipping-box bg-white p-4 shadow rounded">
+              <h6 className="text-primary">Order Details</h6>
+              <hr />
+              <p className="my-0 py-0">
+                <strong>Name: </strong>
+                {order?.user?.name}
+                {order?.user?.email}
+              </p>
+              <p className="my-0 py-0">
+                <strong>Email: </strong>
+                {order?.user?.email}
+              </p>
+              <p className="my-0 py-0">
+                <strong>Address:</strong>
+                {order?.shippingAddress?.address},{order?.shippingAddress?.city}
+                {order?.shippingAddress?.postalCode},
+                {order?.shippingAddress?.country}
+              </p>
+              <p className="my-0 py-0">
+                <strong>Payment Method: </strong>
+                {order.paymentMethod}
+              </p>
+              <hr />
+              {error && <Message variant="danger">{error}</Message>}
+              <h6 className="text-primary">Order Status</h6>
+              <div className="row">
+                <div className="col-6 my-2">
+                  {order.isPaid ? (
+                    <Message type="success">
+                      Paid on: {<Time time={order.paidAt} />}
+                    </Message>
+                  ) : (
+                    <Message type="danger">Not Paid</Message>
+                  )}
+                  {!order.isPaid && (
+                    <PaystackButton
+                      className="paystack-button btn_one py-1 mt-2"
+                      {...componentProps}
+                    />
+                  )}
+                </div>
+                <div className="col-6 my-2">
+                  {order.isDelivered ? (
+                    <Message type="success">
+                      Delivered on: {<Time time={order.deliveredAt} />}
+                    </Message>
+                  ) : (
+                    <Message type="danger">Not Delivered</Message>
+                  )}
+                  {userInfo &&
+                    userInfo.isAdmin &&
+                    order.isPaid &&
+                    !order.isDelivered && (
+                      <button
+                        className="btn_one py-1 mt-2"
+                        onClick={deliverHandler}
+                      >
+                        Mark As Delivered
+                      </button>
+                    )}
+                  {loadingDeliver && <Loader smallPage={true} />}
+                </div>
+              </div>
+              <hr />
+              <h6 className="text-primary">Order Items</h6>
+              {order.orderItems.length === 0 ? (
+                <Message type="danger" message="Your order is empty" />
+              ) : (
+                <ul>
+                  {order.orderItems.map((item, index) => (
+                    <li key={index} className="my-1">
+                      <Image
+                        cloudName="psalmzie"
+                        publicId={item.image}
+                        width="auto"
+                        height="50"
+                        crop="scale"
+                        alt={item.name}
+                        className="img-fluid mr-2"
+                      />
+                      <span className="mx-1">{item.name}</span>
+                      <span>
+                        ({item.quantity} x &#8358;{item.price} = &#8358;
+                        {item.quantity * item.price})
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <hr />
+              <h6 className="text-primary">Order Summary</h6>
+              <div className="table-responsive ">
+                <table className="table table-hover shadow-sm">
+                  <thead className="thead-dark">
+                    <tr>
+                      <th scope="col">Items</th>
+                      <th scope="col">Shipping</th>
+                      <th scope="col">Tax</th>
+                      <th scope="col">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td> &#8358;{order.itemsPrice}</td>
+                      <td> &#8358;{order.shippingPrice}</td>
+                      <td> &#8358;{order.taxPrice}</td>
+                      <td> &#8358;{order.totalPrice}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
-      <h2>Order Items</h2>
+              <Link to="/orders" className="w-100 mt-3 btn_one">
+                My Orders
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* <h2>Order Items</h2>
       {order?.orderItems?.length === 0 ? (
         <Message>Your order is empty</Message>
       ) : (
@@ -174,35 +268,16 @@ const OrderScreen = () => {
             </li>
           ))}
         </ul>
-      )}
+      )} */}
 
-      <Card>
-        <h2>Order Summary</h2>
-        <p>Items &#8358;{order.itemsPrice}</p>
-        <h2>Shipping</h2>
-        <p> &#8358;{order.shippingPrice}</p>
-        <h2>Tax </h2>
-        <p> &#8358;{order.taxPrice}</p>
-        <h2>Total</h2>
-        <p> &#8358;{order.totalPrice}</p>
-      </Card>
-      {!order.isPaid && (
+      {/* {!order.isPaid && (
         <li>
-          {loadingPay && <Loader fullPage="fullPage" imgHeight="80px" />}
+          {loadingPay && <Loader fullPage={true} />}
           {userInfo && order && !order.isPaid && (
             <PaystackButton className="paystack-button" {...componentProps} />
           )}
-          {/* {!publickey ? (
-            <Loader />
-          ) : (
-            <PaystackButton className="paystack-button" {...componentProps} />
-          )} */}
         </li>
-      )}
-      {loadingDeliver && <Loader smallPage="smallPage" imgHeight="40px" />}
-      {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
-        <button onClick={deliverHandler}>Mark As Delivered</button>
-      )}
+      )} */}
     </>
   );
 };

@@ -202,7 +202,7 @@ const PlaceorderSreen = () => {
               {cart.cartItems.length !== 0 && (
                 <div className="row ">
                   <div className="col-6  my-2">
-                    {cart.cartItems !== 0 && (
+                    {cart.cartItems.length !== 0 && (
                       <PaystackButton
                         className="paystack-button btn_two py-1 mt-2"
                         {...componentProps}

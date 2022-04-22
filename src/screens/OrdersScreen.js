@@ -12,6 +12,7 @@ import {
 } from "../constant/orderConstants";
 import SectionHeader from "../components/SectionHeader";
 import { AiFillEye } from "react-icons/ai";
+import Time from "../components/Time";
 
 const OrdersScreen = () => {
   const dispatch = useDispatch();
@@ -90,7 +91,7 @@ const OrdersScreen = () => {
                         {order.isPaid ? (
                           <>
                             <Message type="success">
-                              Paid on ({order.paidAt.substring(0, 10)})
+                              Paid on: {<Time time={order.paidAt} />} 
                             </Message>
                           </>
                         ) : (
@@ -98,9 +99,9 @@ const OrdersScreen = () => {
                         )}
                       </td>
                       <td>
-                        {order.isDeliverd ? (
+                        {order.isDelivered ? (
                           <Message type="success">
-                            Delivered on ({order.deliveredAt.substring(0, 10)})
+                            Delivered on: ({<Time time={order.deliveredAt} />})
                           </Message>
                         ) : (
                           <Message type="danger" message="Not Delivered" />
