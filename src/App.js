@@ -25,6 +25,7 @@ const PaymentScreen = lazy(() => import("./screens/PaymentScreen"));
 const ProductScreen = lazy(() => import("./screens/ProductScreen"));
 const CartScreen = lazy(() => import("./screens/CartScreen"));
 const CategoryScreen = lazy(() => import("./screens/CategoryScreen"));
+const NotFound = lazy(() => import("./screens/NotFound"));
 
 function App() {
   return (
@@ -67,7 +68,7 @@ function App() {
               element={<SearchScreen />}
             />
             <Route path="/page/:pageNumber" element={<HomeScreen />} />
-            <Route path="*" element={<>Not Found</>} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </main>

@@ -13,8 +13,7 @@ import Paginate from "../components/Paginate";
 import { useParams } from "react-router-dom";
 import SectionHeader from "../components/SectionHeader";
 import { AiFillDelete, AiFillEdit, AiOutlinePlus } from "react-icons/ai";
-import { customSweetAlert, toastMessage } from "../utils/utils";
-import swal from "@sweetalert/with-react";
+import {  toastMessage } from "../utils/utils";
 
 const ProductListScreen = () => {
   const dispatch = useDispatch();
