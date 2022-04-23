@@ -36,8 +36,6 @@ const OrdersScreen = () => {
       navigate("/login");
     }
     return () => {
-      // dispatch({ type: ORDER_PAY_RESET });
-      // dispatch({ type: ORDER_DELIVER_RESET });
       dispatch({ type: MY_ORDER_LIST_RESET });
       dispatch({ type: ORDER_DETAILS_RESET });
     };
@@ -84,8 +82,11 @@ const OrdersScreen = () => {
                   {orders.map((order, index) => (
                     <tr key={order._id + index}>
                       <th scope="row">{index + 1}</th>
-                      {/* <td>{order._id.substring(0, 2) + "..."}</td> */}
-                      <td>{order.createdAt.substring(0, 10)}</td>
+                      <td>
+                        <Message type="success">
+                          <Time time={order.createdAt} />
+                        </Message>
+                      </td>
                       <td> &#8358;{order.totalPrice}</td>
                       <td>
                         {order.isPaid ? (
@@ -120,7 +121,7 @@ const OrdersScreen = () => {
           ) : (
             <Message
               type="danger"
-              message="You have  not placed any order yet"
+              message="You have not placed any order yet"
             />
           )}
         </>

@@ -120,27 +120,6 @@ const Header = () => {
                   )}
                 </div>
               </li>
-
-              <li className="nav-item">
-                <Link className="nav-link" to="/cart">
-                  <div className="nav-icon">
-                    <span className="count shadow-sm">{cartItems?.length}</span>
-                    <HiOutlineShoppingCart className="mr-3 ml-2 position-relative" />
-                  </div>
-                  <div>Cart</div>
-                </Link>
-              </li>
-              {/* <li className="nav-item">
-                <Link className="nav-link" to="/wishlist">
-                  <div className="nav-icon">
-                    <span className="count shadow-sm">
-                      {wishListItems?.length}
-                    </span>
-                    <FaListOl className="mr-3 ml-2 position-relative" />
-                  </div>
-                  <div>Wishlist</div>
-                </Link>
-              </li> */}
               {userInfo && userInfo.isAdmin && (
                 <li className="nav-item dropdown">
                   <Link
@@ -170,6 +149,27 @@ const Header = () => {
                   </div>
                 </li>
               )}
+
+              <li className="nav-item">
+                <Link className="nav-link" to="/cart">
+                  <div className="nav-icon">
+                    <span className="count shadow-sm">{cartItems?.length}</span>
+                    <HiOutlineShoppingCart className="mr-3 ml-2 position-relative" />
+                  </div>
+                  <div>Cart</div>
+                </Link>
+              </li>
+              {/* <li className="nav-item">
+                <Link className="nav-link" to="/wishlist">
+                  <div className="nav-icon">
+                    <span className="count shadow-sm">
+                      {wishListItems?.length}
+                    </span>
+                    <FaListOl className="mr-3 ml-2 position-relative" />
+                  </div>
+                  <div>Wishlist</div>
+                </Link>
+              </li> */}
             </ul>
           </div>
         </nav>

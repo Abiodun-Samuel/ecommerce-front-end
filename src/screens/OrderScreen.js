@@ -193,6 +193,7 @@ const OrderScreen = () => {
                   ) : (
                     <Message type="danger">Not Delivered</Message>
                   )}
+                  {loadingDeliver && <Loader smallPage={true} />}
                   {userInfo &&
                     userInfo.isAdmin &&
                     order.isPaid &&
@@ -204,7 +205,6 @@ const OrderScreen = () => {
                         Mark As Delivered
                       </button>
                     )}
-                  {loadingDeliver && <Loader smallPage={true} />}
                 </div>
               </div>
               <hr />
@@ -255,38 +255,19 @@ const OrderScreen = () => {
                   </tbody>
                 </table>
               </div>
-
-              <Link to="/orders" className="w-100 mt-3 btn_one">
-                My Orders
-              </Link>
+              {userInfo.isAdmin ? (
+                <Link to="/admin/orders" className="w-100 mt-3 btn_one py-2">
+                  My Orders
+                </Link>
+              ) : (
+                <Link to="/orders" className="w-100 mt-3 btn_one py-2">
+                  My Orders
+                </Link>
+              )}
             </div>
           </div>
         </div>
       </div>
-
-      {/* <h2>Order Items</h2>
-      {order?.orderItems?.length === 0 ? (
-        <Message>Your order is empty</Message>
-      ) : (
-        <ul>
-          {order?.orderItems?.map((item, index) => (
-            <li key={index}>
-              <img src={item.image} alt={item.name} />
-              <Link to={`/product/${item.product}`}>{item.name}</Link>
-              {item.quantity} x ${item.price} = ${item.quantity * item.price}
-            </li>
-          ))}
-        </ul>
-      )} */}
-
-      {/* {!order.isPaid && (
-        <li>
-          {loadingPay && <Loader fullPage={true} />}
-          {userInfo && order && !order.isPaid && (
-            <PaystackButton className="paystack-button" {...componentProps} />
-          )}
-        </li>
-      )} */}
     </>
   );
 };
