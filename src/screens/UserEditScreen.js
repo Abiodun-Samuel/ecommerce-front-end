@@ -96,7 +96,6 @@ const UserEditScreen = () => {
         </form>
       )}
 
-      <div></div>
     </div>
   );
 };
