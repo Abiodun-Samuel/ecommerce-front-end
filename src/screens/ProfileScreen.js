@@ -9,6 +9,9 @@ import {
   USER_UPDATE_PROFILE_RESET,
 } from "../constant/userConstants";
 import { myOrdersList } from "../actions/orderActions";
+import SectionHeader from "../components/SectionHeader";
+import { toastMessage } from "../utils/utils";
+import { FaSignInAlt } from "react-icons/fa";
 
 const ProfileScreen = () => {
   const [name, setName] = useState("");
@@ -16,17 +19,11 @@ const ProfileScreen = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState(null);
-
-  const [searchParams] = useSearchParams();
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userDetails = useSelector((state) => state.userDetails);
-  const { loading, error, user } = userDetails;
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
-  const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
-  const { success } = userUpdateProfile;
+  const { loading, error, user } = useSelector((state) => state.userDetails);
+  const { userInfo } = useSelector((state) => state.userLogin);
+  const { success } = useSelector((state) => state.userUpdateProfile);
 
   useEffect(() => {
     if (!userInfo) {
@@ -52,46 +49,77 @@ const ProfileScreen = () => {
   };
 
   return (
-    <div>
-      <h2>User Profile</h2>
+    <>
+      <div className="row mb-3 mt-5">
+        <div className="col-lg-12">
+          <SectionHeader header="User Profile" />
+          <nav aria-label="breadcrumb">
+            <ol className="breadcrumb p-0 m-0 bg-transparent my-2 small">
+              <li className="breadcrumb-item">
+                <Link to="/">Home</Link>
+              </li>
+              <li className="breadcrumb-item active" aria-current="page">
+                Profile
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
 
-      {error && <Message variant="danger">{error}</Message>}
-      {message && <Message variant="danger">{message}</Message>}
-      {success && <Message variant="success">'Profile Updated'</Message>}
-      {loading && <Loader></Loader>}
+      <div id="login" className="mt-5 p-5">
+        {loading && <Loader fullPage={true} />}
+        {error && <Message type="danger">{error}</Message>}
 
-      <form onSubmit={submitHandler}>
-        <input
-          type="text"
-          value={name}
-          placeholder="Enter your name"
-          className="form-control"
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="email"
-          value={email}
-          placeholder="Enter your email"
-          className="form-control"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          className="form-control"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="confirm Password"
-          value={confirmPassword}
-          className="form-control"
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-        <input type="submit" value="Update" className="btn btn-primary" />
-      </form>
-    </div>
+        <div className="row">
+          <div className="col-lg-6 col-md-7 col-sm-10">
+            <div className="login-box bg-white rounded shadow p-4">
+              <SectionHeader header="User" />
+              {message && <Message type="danger">{message}</Message>}
+
+              <form onSubmit={submitHandler}>
+                <input
+                  type="text"
+                  value={name}
+                  placeholder="Enter your name"
+                  className="form-control"
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <input
+                  type="email"
+                  value={email}
+                  placeholder="Enter your email"
+                  className="form-control"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  className="form-control"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <input
+                  type="password"
+                  placeholder="confirm Password"
+                  value={confirmPassword}
+                  className="form-control"
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                {success &&
+                  toastMessage(
+                    "success",
+                    "Your profile has been updated successfully"
+                  )}
+
+                <button type="submit" className="btn_one mt-4 py-2 w-100">
+                  Update
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
