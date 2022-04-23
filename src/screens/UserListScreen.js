@@ -74,9 +74,7 @@ const UserListScreen = () => {
                     <th scope="row">{index + 1}</th>
                     <td>{user._id.substring(0, 5) + "..."}</td>
                     <td>{user.name}</td>
-                    <td>
-                      <Link to={`mailto:${user.email}`}>{user.email}</Link>
-                    </td>
+                    <td>{user.email}</td>
                     <td>
                       <span>{user.isAdmin ? "Admin" : "User"}</span>
                     </td>
