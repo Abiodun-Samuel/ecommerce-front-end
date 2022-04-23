@@ -66,7 +66,7 @@ const ProfileScreen = () => {
         </div>
       </div>
 
-      <div id="login" className="mt-5 p-5">
+      <div id="login" className="my-1 p-5">
         {loading && <Loader fullPage={true} />}
         {error && <Message type="danger">{error}</Message>}
 

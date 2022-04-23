@@ -45,6 +45,16 @@ const CartScreen = () => {
       <div className="row mb-3 mt-5">
         <div className="col-lg-12">
           <SectionHeader header="Shopping Cart" />
+          <nav aria-label="breadcrumb">
+            <ol className="breadcrumb p-0 m-0 bg-transparent my-2 small">
+              <li className="breadcrumb-item">
+                <Link to="/">Home</Link>
+              </li>
+              <li className="breadcrumb-item active" aria-current="page">
+                Cart
+              </li>
+            </ol>
+          </nav>
         </div>
       </div>
 
