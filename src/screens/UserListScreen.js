@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { listUsers, deleteUser } from "../actions/userActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const UserListScreen = () => {
   const dispatch = useDispatch();
@@ -34,9 +34,9 @@ const UserListScreen = () => {
     <>
       <h1>Users</h1>
       {loading ? (
-        <Loader />
+        <Loader fullPage={true} />
       ) : error ? (
-        <Message variant="danger">{error}</Message>
+        <Message type="danger">{error}</Message>
       ) : (
         <>
           <span>ID, Name, Email, Admin</span>

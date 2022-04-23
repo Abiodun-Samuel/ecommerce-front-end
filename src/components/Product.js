@@ -85,13 +85,13 @@ const Product = ({ product }) => {
           </Link>
 
           <div className="discount d-flex justify-content-between my-1">
-            <button className="wish_btn" onClick={addToCartHandler}>
+            {/* <button className="wish_btn" onClick={addToCartHandler}>
               <span>
                 <FaListOl />
               </span>
-            </button>
+            </button> */}
 
-            <div>
+            <div className="my-1">
               <p className="price">&#8358; {formatCurrency(product.price)}</p>
               <p className="inflatedprice">
                 &#8358; {formatCurrency(product.inflatedPrice)}
@@ -102,8 +102,9 @@ const Product = ({ product }) => {
           <div className="mt-1 mb-2">
             <Rating value={product.rating} />
           </div>
+
           <button
-            className="shadow btn-block product_btn"
+            className="shadow-lg btn-block product_btn py-1"
             onClick={addToCartHandler}
             disabled={product.countInStock === 0}
           >
