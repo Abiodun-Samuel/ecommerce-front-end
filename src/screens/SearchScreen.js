@@ -79,16 +79,25 @@ const SearchScreen = () => {
       ) : (
         <>
           <div className="row">
-            {products.map((product) => {
-              return (
-                <div
-                  className="col-lg-2 col-md-4 col-sm-6 col-6 my-2"
-                  key={product._id}
-                >
-                  <Product product={product} />
-                </div>
-              );
-            })}
+            {products.length > 0 ? (
+              products.map((product) => {
+                return (
+                  <div
+                    className="col-lg-2 col-md-4 col-sm-6 col-6 my-2"
+                    key={product._id}
+                  >
+                    <Product product={product} />
+                  </div>
+                );
+              })
+            ) : (
+              <div className="col-lg-12 my-2">
+                <Message
+                  type="danger"
+                  message="Oops, No products found. You can search for another product"
+                />
+              </div>
+            )}
           </div>
 
           <div className="row my-2">
