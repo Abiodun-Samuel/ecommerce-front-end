@@ -83,7 +83,7 @@ const HomeScreen = () => {
             {products.map((product) => {
               return (
                 <div
-                  className="col-lg-2 col-md-4 col-sm-6 col-6 my-2"
+                  className="col-lg-3 col-md-4 col-sm-6 col-12 my-2"
                   key={product._id}
                 >
                   <Product product={product} />

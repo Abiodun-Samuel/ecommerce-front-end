@@ -5,7 +5,7 @@ import { addToCart } from "../actions/cartActions";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { HiOutlineShoppingCart } from "react-icons/hi";
-import { FaListOl } from "react-icons/fa";
+// import { FaListOl } from "react-icons/fa";
 import { Image } from "cloudinary-react";
 import { formatCurrency } from "../utils/utils";
 
