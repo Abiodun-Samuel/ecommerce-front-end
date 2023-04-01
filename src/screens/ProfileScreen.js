@@ -29,7 +29,7 @@ const ProfileScreen = () => {
     if (!userInfo) {
       navigate("/login");
     } else {
-      if (!user.name || !user || success) {
+      if (!user?.name || !user || success) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET });
         dispatch(getUserDetails("profile"));
       } else {
