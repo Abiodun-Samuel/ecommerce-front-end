@@ -24,11 +24,12 @@ const Product = ({ product }) => {
   };
 
   const formatProductName = (name) => {
-    if (name.length < 16) {
-      return `${name.substring(0, 16).toUpperCase()}`;
-    } else {
-      return `${name.substring(0, 16).toUpperCase()}...`;
-    }
+    return name.toUpperCase();
+    // if (name.length < 16) {
+    //   return `${name.substring(0, 16).toUpperCase()}`;
+    // } else {
+    //   return `${name.substring(0, 16).toUpperCase()}...`;
+    // }
   };
 
   const addToCartHandler = () => {
